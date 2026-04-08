@@ -12,7 +12,7 @@ _✨ 舞立方插件：提供舞立方战力分析等基础功能 ✨_
 
 
 <a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/owner/nonebot-plugin-dancecube.svg" alt="license">
+    <img src="https://img.shields.io/github/license/1v7w/nonebot-plugin-dancecube.svg" alt="license">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-dancecube">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-dancecube.svg" alt="pypi">
