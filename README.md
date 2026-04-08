@@ -1,7 +1,7 @@
 <div align="center">
-  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-dancecube/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
+  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
   <br>
-  <p><img src="https://github.com/A-kirami/nonebot-plugin-dancecube/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
+  <p><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
 </div>
 
 <div align="center">
@@ -91,10 +91,10 @@ _✨ 舞立方插件：提供舞立方战力分析等基础功能 ✨_
 
 
 **/dc myrt**
-![myrt](https://private-user-images.githubusercontent.com/25610914/575376467-021edb83-5a6c-4629-99a5-e5e419761a55.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzU2NjM1NjIsIm5iZiI6MTc3NTY2MzI2MiwicGF0aCI6Ii8yNTYxMDkxNC81NzUzNzY0NjctMDIxZWRiODMtNWE2Yy00NjI5LTk5YTUtZTVlNDE5NzYxYTU1LmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDA4VDE1NDc0MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTY2NDc1NTg2Y2MxMzUxZTdkNDk2M2MzNmY3OGU4NjhlYmU4MGFlNWE4NjNlODhhZjRjYzViYWZiZGQ1ODFlYzEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.JpVV5dISyef-l5PMuJS5k0L_CvDdOuOLtP2vGLY2yvY)
+![myrt](./assets/myrt.jpg)
 
 **/dc ap30**
-![ap30](https://private-user-images.githubusercontent.com/25610914/575376735-63abf0b3-4e46-4e3f-8e99-c8cb442daf70.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzU2NjM1NjIsIm5iZiI6MTc3NTY2MzI2MiwicGF0aCI6Ii8yNTYxMDkxNC81NzUzNzY3MzUtNjNhYmYwYjMtNGU0Ni00ZTNmLThlOTktYzhjYjQ0MmRhZjcwLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDA4VDE1NDc0MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUzZDczYjkxOTA1YjMzZjVjNjI4ODExMDE5NjhiZDA2ZWIyMTdjZDE1MTM4ZTVmODcxNzY0MTZkZmRlMzc2YWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.m10nGaxpK1JYJ8Ax5zOFn6kbUalDJdb4HUD2tt5h-xc)
+![ap30](./assets/ap30.jpg)
 
 **/dc song 6354**
-![song 6354](https://private-user-images.githubusercontent.com/25610914/575376771-ce0049f3-80eb-4c02-9079-f3a794f1762a.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzU2NjM1NjIsIm5iZiI6MTc3NTY2MzI2MiwicGF0aCI6Ii8yNTYxMDkxNC81NzUzNzY3NzEtY2UwMDQ5ZjMtODBlYi00YzAyLTkwNzktZjNhNzk0ZjE3NjJhLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDA4VDE1NDc0MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTU3ZGE3NGIxMDEzNTA2OGM1NWNiNDFkOGVmN2YxY2Y5ZTJkZjNiYzg5ZTM0NTYwNGE5MTg0ZTVjNWU4OGUyOGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.WEUPNeNyOALOGqWIw5ZZvCXZmnF5Jla0_BqUw_RuPoY)
+![song 6354](./assets/singlesong.jpg)
