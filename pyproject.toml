@@ -1,0 +1,33 @@
+[project]
+name = "nonebot-plugin-dancecube"
+version = "0.1.0"
+description = "一个简单的舞立方插件"
+authors = [
+    { name = "1v7w", email = "gascd11@163.com" },
+]
+dependencies = [
+    "nonebot2>=2.2.0",
+    "nonebot-adapter-onebot>=2.2.0",
+    "httpx>=0.24.0",
+    "Pillow>=10.0.0",
+    "pydantic>=2.0.0",
+    "nonebot_plugin_apscheduler>=0.3.0",
+    "nonebot_plugin_htmlrender>=0.3.0",
+    "nonebot_plugin_localstore>=0.7.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.urls]
+Homepage = "https://github.com/1v7w/nonebot-plugin-dancecube"
+Repository = "https://github.com/1v7w/nonebot-plugin-dancecube"
+Bug-Tracker = "https://github.com/1v7w/nonebot-plugin-dancecube"
+
+[tool.nonebot]
+plugins = ["nonebot_plugin_dancecube"]
+plugin_dirs = ["nonebot_plugin_dancecube"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

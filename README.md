@@ -1,70 +1,29 @@
 <div align="center">
-  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
+  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/A-kirami/nonebot-plugin-dancecube/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
   <br>
-  <p><img src="https://github.com/A-kirami/nonebot-plugin-template/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
+  <p><img src="https://github.com/A-kirami/nonebot-plugin-dancecube/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
 </div>
 
 <div align="center">
 
-# nonebot-plugin-template
+# nonebot-plugin-dancecube
 
-_✨ NoneBot 插件简单描述 ✨_
+_✨ 舞立方插件：提供舞立方战力分析等基础功能 ✨_
 
 
 <a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/owner/nonebot-plugin-template.svg" alt="license">
+    <img src="https://img.shields.io/github/license/owner/nonebot-plugin-dancecube.svg" alt="license">
 </a>
-<a href="https://pypi.python.org/pypi/nonebot-plugin-template">
-    <img src="https://img.shields.io/pypi/v/nonebot-plugin-template.svg" alt="pypi">
+<a href="https://pypi.python.org/pypi/nonebot-plugin-dancecube">
+    <img src="https://img.shields.io/pypi/v/nonebot-plugin-dancecube.svg" alt="pypi">
 </a>
-<img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="python">
+<img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="python">
 
 </div>
 
-这是一个 nonebot2 插件项目的模板库, 你可以直接使用本模板创建你的 nonebot2 插件项目的仓库
-
-<details open>
-<summary>模板库使用方法</summary>
-
-1. 点击 [![start-course](https://user-images.githubusercontent.com/1221423/235727646-4a590299-ffe5-480d-8cd5-8194ea184546.svg)](https://github.com/new?template_owner=A-kirami&template_name=nonebot-plugin-template&owner=%40me&name=nonebot-plugin-&visibility=public) 创建仓库
-2. 在创建好的新仓库中, 在 "Add file" 菜单中选择 "Create new file", 在新文件名处输入`LICENSE`, 此时在右侧会出现一个 "Choose a license template" 按钮, 点击此按钮选择开源协议模板, 然后在最下方提交新文件到主分支
-3. 全局替换`owner`为仓库所有者ID; 全局替换`nonebot-plugin-template`为插件名; 全局替换`nonebot_plugin_template`为包名; 修改 python 徽标中的版本为你插件的运行所需版本
-4. 修改 README 中的插件名和插件描述, 并在下方填充相应的内容
-
-</details>
-
-> [!NOTE]
-> 模板库中自带了一个发布工作流, 你可以使用此工作流自动发布你的插件到 pypi
-
-<details>
-<summary>配置发布工作流</summary>
-
-1. 前往 https://pypi.org/manage/account/#api-tokens 并创建一个新的 API 令牌。创建成功后不要关闭页面，不然你将无法再次查看此令牌。
-2. 在单独的浏览器选项卡或窗口中，打开 [Actions secrets and variables](./settings/secrets/actions) 页面。你也可以在 Settings - Secrets and variables - Actions 中找到此页面。
-3. 点击 New repository secret 按钮，创建一个名为 `PYPI_API_TOKEN` 的新令牌，并从第一步复制粘贴令牌。
-
-</details>
-
-> [!IMPORTANT]
-> 这个发布工作流需要 pyproject.toml 文件, 并且只支持 [PEP 621](https://peps.python.org/pep-0621/) 标准的 pyproject.toml 文件
-
-<details>
-<summary>触发发布工作流</summary>
-从本地推送任意 tag 即可触发。
-
-创建 tag:
-
-    git tag <tag_name>
-
-推送本地所有 tag:
-
-    git push origin --tags
-
-</details>
-
 ## 📖 介绍
 
-这里是插件的详细介绍部分
+目前支持二维码登录、战力分析、战力分析(包含自制谱)、战绩最好的30首ap歌曲、获取指定歌曲id的个人成绩、自动更新官方曲目封面。
 
 ## 💿 安装
 
@@ -72,7 +31,7 @@ _✨ NoneBot 插件简单描述 ✨_
 <summary>使用 nb-cli 安装</summary>
 在 nonebot2 项目的根目录下打开命令行, 输入以下指令即可安装
 
-    nb plugin install nonebot-plugin-template
+    nb plugin install nonebot-plugin-dancecube
 
 </details>
 
@@ -83,27 +42,27 @@ _✨ NoneBot 插件简单描述 ✨_
 <details>
 <summary>pip</summary>
 
-    pip install nonebot-plugin-template
+    pip install nonebot-plugin-dancecube
 </details>
 <details>
 <summary>pdm</summary>
 
-    pdm add nonebot-plugin-template
+    pdm add nonebot-plugin-dancecube
 </details>
 <details>
 <summary>poetry</summary>
 
-    poetry add nonebot-plugin-template
+    poetry add nonebot-plugin-dancecube
 </details>
 <details>
 <summary>conda</summary>
 
-    conda install nonebot-plugin-template
+    conda install nonebot-plugin-dancecube
 </details>
 
 打开 nonebot2 项目根目录下的 `pyproject.toml` 文件, 在 `[tool.nonebot]` 部分追加写入
 
-    plugins = ["nonebot_plugin_template"]
+    plugins = ["nonebot_plugin_dancecube"]
 
 </details>
 
@@ -113,14 +72,29 @@ _✨ NoneBot 插件简单描述 ✨_
 
 | 配置项 | 必填 | 默认值 | 说明 |
 |:-----:|:----:|:----:|:----:|
-| 配置项1 | 是 | 无 | 配置说明 |
-| 配置项2 | 否 | 无 | 配置说明 |
+| COVER_UPDATE_CRON | 否 | 0 3 * * * | cron格式；默认每天凌晨3点更新官方曲目封面 |
+|SUPERUSERS|否|-|超级用户/管理员|
+|NICKNAME|否|nisky|机器人名字，生成图片最低下会展示|
 
 ## 🎉 使用
 ### 指令表
 | 指令 | 权限 | 需要@ | 范围 | 说明 |
 |:-----:|:----:|:----:|:----:|:----:|
-| 指令1 | 主人 | 否 | 私聊 | 指令说明 |
-| 指令2 | 群员 | 是 | 群聊 | 指令说明 |
+| /dc | 群员 | 否 | 私聊/群聊 | 获取指令帮助 |
+| /dc login | 群员 | 否 | 私聊 | 二维码登录 |
+| /dc myrt | 群员 | 否 | 群聊 | 获取战力分析 |
+| /dc myrtall | 群员 | 否 | 群聊 | 获取战力分析(含自制谱) |
+| /dc ap30 | 群员 | 否 | 群聊 | 获取ap战绩最好的30首 |
+| /dc updatecover | 超级用户 | 否 | 私聊/群聊 | 更新官方曲目封面 |
+
 ### 效果图
-如果有效果图的话
+
+
+**/dc myrt**
+![myrt](https://private-user-images.githubusercontent.com/25610914/575376467-021edb83-5a6c-4629-99a5-e5e419761a55.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzU2NjM1NjIsIm5iZiI6MTc3NTY2MzI2MiwicGF0aCI6Ii8yNTYxMDkxNC81NzUzNzY0NjctMDIxZWRiODMtNWE2Yy00NjI5LTk5YTUtZTVlNDE5NzYxYTU1LmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDA4VDE1NDc0MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTY2NDc1NTg2Y2MxMzUxZTdkNDk2M2MzNmY3OGU4NjhlYmU4MGFlNWE4NjNlODhhZjRjYzViYWZiZGQ1ODFlYzEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.JpVV5dISyef-l5PMuJS5k0L_CvDdOuOLtP2vGLY2yvY)
+
+**/dc ap30**
+![ap30](https://private-user-images.githubusercontent.com/25610914/575376735-63abf0b3-4e46-4e3f-8e99-c8cb442daf70.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzU2NjM1NjIsIm5iZiI6MTc3NTY2MzI2MiwicGF0aCI6Ii8yNTYxMDkxNC81NzUzNzY3MzUtNjNhYmYwYjMtNGU0Ni00ZTNmLThlOTktYzhjYjQ0MmRhZjcwLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDA4VDE1NDc0MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUzZDczYjkxOTA1YjMzZjVjNjI4ODExMDE5NjhiZDA2ZWIyMTdjZDE1MTM4ZTVmODcxNzY0MTZkZmRlMzc2YWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.m10nGaxpK1JYJ8Ax5zOFn6kbUalDJdb4HUD2tt5h-xc)
+
+**/dc song 6354**
+![song 6354](https://private-user-images.githubusercontent.com/25610914/575376771-ce0049f3-80eb-4c02-9079-f3a794f1762a.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzU2NjM1NjIsIm5iZiI6MTc3NTY2MzI2MiwicGF0aCI6Ii8yNTYxMDkxNC81NzUzNzY3NzEtY2UwMDQ5ZjMtODBlYi00YzAyLTkwNzktZjNhNzk0ZjE3NjJhLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDA4VDE1NDc0MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTU3ZGE3NGIxMDEzNTA2OGM1NWNiNDFkOGVmN2YxY2Y5ZTJkZjNiYzg5ZTM0NTYwNGE5MTg0ZTVjNWU4OGUyOGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.WEUPNeNyOALOGqWIw5ZZvCXZmnF5Jla0_BqUw_RuPoY)
