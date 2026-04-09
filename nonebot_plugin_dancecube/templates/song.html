@@ -1,0 +1,131 @@
+{% extends "_base.html" %}
+
+{% block title %}舞立方单曲成绩{% endblock %}
+{% block container_max_width %}800px{% endblock %}
+{% block page_heading %}🎵 单曲成绩查询{% endblock %}
+
+{% block extra_style %}
+  .section-title { border-left-color: #48dbfb; color: #48dbfb; }
+
+  .song-info-card {
+    background: rgba(255, 255, 255, 0.1); border-radius: 20px;
+    padding: 30px; backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 30px; display: flex; gap: 25px; align-items: center;
+  }
+  .song-cover {
+    width: 175px; height: 202px; border-radius: 12px;
+    overflow: hidden; flex-shrink: 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  .song-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .song-details { flex: 1; }
+  .song-title { font-size: 1.6rem; font-weight: bold; color: #feca57; margin-bottom: 8px; word-break: break-all; }
+  .song-id { font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 15px; }
+  .player-info {
+    display: flex; align-items: center; gap: 15px;
+    background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 12px 15px;
+  }
+  .player-avatar {
+    width: 50px; height: 50px; border-radius: 50%;
+    overflow: hidden; border: 2px solid #48dbfb; flex-shrink: 0;
+  }
+  .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .player-name { font-size: 1.1rem; font-weight: bold; color: #48dbfb; }
+  .player-stats { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: 4px; }
+
+  .record-card {
+    background: rgba(255, 255, 255, 0.1); border-radius: 15px;
+    padding: 20px 25px; backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 15px; display: flex; align-items: center; gap: 20px;
+  }
+  .record-difficulty { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
+  .level-text { font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); }
+  .record-accuracy { min-width: 120px; text-align: center; }
+  .accuracy-value { font-size: 2rem; font-weight: bold; color: #feca57; }
+  .accuracy-value.perfect {
+    background: linear-gradient(90deg, #ff6b6b, #feca57, #4ade80, #48dbfb, #a855f7, #ff6b6b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .accuracy-rank { font-size: 0.9rem; font-weight: bold; margin-top: 2px; }
+  .rank-sssp {
+    background: linear-gradient(90deg, #ff6b6b, #feca57, #4ade80, #48dbfb, #a855f7, #ff6b6b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    font-weight: bold;
+  }
+  .record-stats { flex: 1; display: flex; gap: 25px; flex-wrap: wrap; }
+  .stat-item { display: flex; flex-direction: column; }
+  .stat-item-label { font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 3px; }
+  .stat-item-value { font-size: 1rem; font-weight: bold; color: rgba(255, 255, 255, 0.9); }
+  .record-time { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); text-align: right; min-width: 130px; }
+  .no-record {
+    background: rgba(255, 255, 255, 0.05); border-radius: 15px;
+    padding: 20px 25px; border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 15px; display: flex; align-items: center; gap: 20px; opacity: 0.5;
+  }
+  .no-record .difficulty { opacity: 0.5; }
+  .no-record-text { color: rgba(255, 255, 255, 0.4); font-style: italic; }
+{% endblock %}
+
+{% block content %}
+<!-- 歌曲信息 + 玩家信息 -->
+<div class="song-info-card">
+  <div class="song-cover">
+    <img src="{{ coverUrl }}" alt="{{ songName }}">
+  </div>
+  <div class="song-details">
+    <div class="song-title">{{ songName }}</div>
+    <div class="song-id">id: {{ songId }}</div>
+    <div class="player-info">
+      <div class="player-avatar">
+        <img src="{{ avatarUrl or 'data/head_img.jpg' }}" alt="头像">
+      </div>
+      <div>
+        <div class="player-name">{{ playerName or '玩家名称' }}</div>
+        <div class="player-stats">战力: {{ powerValue or '0' }} | 积分: {{ points or '0' }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 各难度成绩 -->
+<div class="section">
+  <h2 class="section-title">📊 各难度成绩</h2>
+  {% for record in records %}
+  {% if record.hasRecord %}
+  <div class="record-card">
+    <div class="record-difficulty">
+      <span class="difficulty {{ record.difficulty }}">{{ record.levelType }} {{ record.difficulty }}</span>
+      <span class="level-text">Lv.{{ record.level }}</span>
+    </div>
+    <div class="record-accuracy">
+      <div class="accuracy-value {% if record.accuracy == 100 %}perfect{% endif %}">{{ "%.2f"|format(record.accuracy) }}%</div>
+      <div class="accuracy-rank {{ rank_class(record.accuracy) }}">{{ calculate_rank(record.accuracy) }}</div>
+    </div>
+    <div class="record-stats">
+      <div class="stat-item">
+        <span class="stat-item-label">Combo</span>
+        <span class="stat-item-value">{{ record.combo }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item-label">Miss</span>
+        <span class="stat-item-value">{{ record.miss }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-item-label">战力贡献</span>
+        <span class="stat-item-value" style="color: #48dbfb;">{{ record.rating }}</span>
+      </div>
+    </div>
+    <div class="record-time">{{ record.playTime }}</div>
+  </div>
+  {% else %}
+  <div class="no-record">
+    <div class="record-difficulty">
+      <span class="difficulty {{ record.difficulty }}">{{ record.levelType }} {{ record.difficulty }}</span>
+    </div>
+    <div class="no-record-text">暂无游玩记录</div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

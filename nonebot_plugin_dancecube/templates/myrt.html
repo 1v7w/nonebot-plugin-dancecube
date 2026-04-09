@@ -1,0 +1,28 @@
+{% extends "_base.html" %}
+
+{% block title %}舞立方战力分析{% endblock %}
+{% block page_heading %}🎵 {{ pageTitle or '舞立方战力分析' }}{% endblock %}
+
+{% block content %}
+{{ render_personal_info(avatarUrl, playerName, powerValue, points) }}
+
+<!-- Best 30 区域 -->
+<div class="section">
+  <h2 class="section-title">⭐ Best 30 <span class="count">({{ best30Count }})</span></h2>
+  <div class="score-grid">
+    {% for score in best30 %}
+    {{ render_score_card(score) }}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Recent 30 区域 -->
+<div class="section">
+  <h2 class="section-title">🕐 Recent 30 <span class="count">({{ recent30Count }})</span></h2>
+  <div class="score-grid">
+    {% for score in recent30 %}
+    {{ render_score_card(score) }}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

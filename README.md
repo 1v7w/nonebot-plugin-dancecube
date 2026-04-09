@@ -91,10 +91,13 @@ _✨ 舞立方插件：提供舞立方战力分析等基础功能 ✨_
 
 
 **/dc myrt**
+
 ![myrt](./assets/myrt.jpg)
 
 **/dc ap30**
+
 ![ap30](./assets/ap30.jpg)
 
 **/dc song 6354**
+
 ![song 6354](./assets/singlesong.jpg)

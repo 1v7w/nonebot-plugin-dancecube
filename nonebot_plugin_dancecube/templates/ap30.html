@@ -1,0 +1,29 @@
+{% extends "_base.html" %}
+
+{% block title %}舞立方AP30{% endblock %}
+{% block page_heading %}🎵 舞立方AP歌曲{% endblock %}
+
+{% block extra_style %}
+  .section-title { border-left-color: #ff6b6b; color: #ff6b6b; }
+  .avatar { border-color: #ff6b6b; }
+  .personal-details .name { color: #ff6b6b; }
+{% endblock %}
+
+{% block content %}
+{% call render_personal_info(avatarUrl, playerName, powerValue, points) %}
+<div class="stat">
+  <span class="stat-label">AP歌曲数:</span>
+  <span class="ap-count-highlight">{{ apCount or '0' }}</span>
+</div>
+{% endcall %}
+
+<!-- AP 歌曲列表 -->
+<div class="section">
+  <h2 class="section-title">🎯 AP歌曲列表 <span class="count">({{ apListCount }})</span></h2>
+  <div class="score-grid">
+    {% for score in apList %}
+    {{ render_score_card(score) }}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,240 @@
+{# 共享基础模板：包含通用样式和宏 #}
+{# 此模板不直接渲染，仅供其他模板 extends 或 import #}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}舞立方{% endblock %}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      padding: 30px;
+      color: #fff;
+    }
+
+    .container { max-width: {% block container_max_width %}1400px{% endblock %}; margin: 0 auto; }
+
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .header .subtitle { color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; }
+
+    /* 个人信息 */
+    .personal-info { margin-bottom: 40px; }
+    .personal-info-container {
+      display: flex; align-items: center; gap: 30px;
+      background: rgba(255, 255, 255, 0.1); border-radius: 20px;
+      padding: 30px; backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .avatar {
+      width: 120px; height: 120px; border-radius: 50%;
+      overflow: hidden; border: 3px solid #feca57;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .personal-details { flex: 1; }
+    .personal-details .name { font-size: 2.2rem; margin-bottom: 15px; color: #feca57; }
+    .stats { display: flex; gap: 40px; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; }
+    .stat-label { font-size: 1rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 5px; }
+    .stat-value { font-size: 2rem; font-weight: bold; color: #48dbfb; }
+    .ap-count-highlight {
+      font-size: 2rem; font-weight: bold;
+      background: linear-gradient(90deg, #ff6b6b, #feca57, #4ade80, #48dbfb, #a855f7, #ff6b6b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* 区域标题 */
+    .section { margin-bottom: 50px; }
+    .section-title {
+      font-size: 1.8rem; margin-bottom: 20px; padding-left: 15px;
+      border-left: 4px solid #feca57; color: #feca57;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title .count { font-size: 1rem; color: rgba(255, 255, 255, 0.6); font-weight: normal; }
+
+    /* 卡片网格 */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    /* 成绩卡片 */
+    .score-card {
+      background: rgba(255, 255, 255, 0.1); border-radius: 15px;
+      overflow: hidden; backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .cover-container { width: 100%; padding-top: 115.43%; position: relative; background: #000; }
+    .cover-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .card-info { padding: 15px; }
+    .song-name { font-size: 1rem; font-weight: bold; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .score-details { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+
+    /* 难度标签 */
+    .difficulty { padding: 3px 8px; border-radius: 5px; font-weight: bold; font-size: 0.75rem; }
+    .difficulty.基础 { background: #60a5fa; color: #000; }
+    .difficulty.进阶 { background: #4ade80; color: #000; }
+    .difficulty.专家 { background: #8a2be2; color: #fff; }
+    .difficulty.大师 { background: #ff69b4; color: #000; }
+    .difficulty.传奇 { background: #fbbf24; color: #000; }
+
+    /* 准确率 */
+    .accuracy { color: #feca57; font-weight: bold; }
+    .accuracy.perfect {
+      background: linear-gradient(90deg, #ff6b6b, #feca57, #4ade80, #48dbfb, #a855f7, #ff6b6b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* 排名徽章 */
+    .rank-badge {
+      position: absolute; top: 10px; right: 10px; width: 40px; height: 40px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 1.2rem; background: rgba(0, 0, 0, 0.7);
+    }
+    .rank-sss.perfect {
+      color: #ffd700; background-color: transparent;
+      background-image: linear-gradient(90deg, #ff6b6b, #feca57, #4ade80, #48dbfb, #a855f7, #ff6b6b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .rank-sss.perfect::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      border-radius: 50%; background: rgba(0, 0, 0, 0.7); z-index: -1;
+    }
+    .rank-sss { color: #ffd700; }
+    .rank-ss { color: #ffd700; }
+    .rank-s { color: #ffd700; }
+    .rank-a { color: #a855f7; }
+    .rank-b { color: #4ade80; }
+    .rank-c { color: #60a5fa; }
+    .rank-d { color: #9ca3af; }
+
+    /* ID 标签 */
+    .id-badge {
+      position: absolute; bottom: 5px; left: 5px; background-color: #666;
+      color: white; font-size: 12px; padding: 2px 6px; border-radius: 3px;
+      font-family: monospace; font-weight: bold;
+    }
+
+    /* 等级/战力 */
+    .level-rating { display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 8px; color: rgba(255, 255, 255, 0.8); }
+    .level { background-color: #4a5568; color: white; padding: 1px 6px; border-radius: 3px; }
+    .level-type { color: #fbbf24; }
+    .rating { color: #48dbfb; font-weight: bold; }
+
+    .play-time { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-top: 8px; text-align: right; }
+
+    .footer {
+      text-align: center; margin-top: 50px; padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.4); font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .score-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .header h1 { font-size: 1.8rem; }
+      .section-title { font-size: 1.4rem; }
+    }
+
+    {% block extra_style %}{% endblock %}
+  </style>
+</head>
+<body>
+  {% macro calculate_rank(accuracy) -%}
+    {%- if accuracy == 100 -%}SSS
+    {%- elif accuracy >= 98 -%}SSS
+    {%- elif accuracy >= 95 -%}SS
+    {%- elif accuracy >= 90 -%}S
+    {%- elif accuracy >= 80 -%}A
+    {%- elif accuracy >= 70 -%}B
+    {%- elif accuracy >= 60 -%}C
+    {%- else -%}D
+    {%- endif -%}
+  {%- endmacro %}
+
+  {% macro rank_class(accuracy) -%}
+    {%- if accuracy == 100 -%}rank-sss perfect
+    {%- elif accuracy >= 98 -%}rank-sss
+    {%- elif accuracy >= 95 -%}rank-ss
+    {%- elif accuracy >= 90 -%}rank-s
+    {%- elif accuracy >= 80 -%}rank-a
+    {%- elif accuracy >= 70 -%}rank-b
+    {%- elif accuracy >= 60 -%}rank-c
+    {%- else -%}rank-d
+    {%- endif -%}
+  {%- endmacro %}
+
+  {% macro render_score_card(score) %}
+  <div class="score-card">
+    <div class="cover-container">
+      <img class="cover-image" src="{{ score.coverUrl }}" alt="{{ score.songName }}">
+      <div class="id-badge">{{ score.id }}</div>
+      <div class="rank-badge {{ rank_class(score.accuracy) }}">{{ calculate_rank(score.accuracy) }}</div>
+    </div>
+    <div class="card-info">
+      <div class="song-name" title="{{ score.songName }}">{{ score.songName }}</div>
+      <div class="score-details">
+        <span class="difficulty {{ score.difficulty }}">{{ score.difficulty }}</span>
+        <span class="accuracy {% if score.accuracy == 100 %}perfect{% endif %}">{{ "%.2f"|format(score.accuracy) }}%</span>
+      </div>
+      <div class="level-rating">
+        <span class="level">Lv.{{ score.level }}</span>
+        <span class="level-type">{{ score.levelType }}</span>
+        <span class="rating">{{ score.rating }}</span>
+      </div>
+      <div class="play-time">{{ score.playTime }}</div>
+    </div>
+  </div>
+  {% endmacro %}
+
+  {% macro render_personal_info(avatarUrl, playerName, powerValue, points) %}
+  <div class="section personal-info">
+    <div class="personal-info-container">
+      <div class="avatar">
+        <img src="{{ avatarUrl or 'data/head_img.jpg' }}" alt="头像">
+      </div>
+      <div class="personal-details">
+        <h2 class="name">{{ playerName or '玩家名称' }}</h2>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">战力值:</span>
+            <span class="stat-value">{{ powerValue or '0' }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">积分:</span>
+            <span class="stat-value">{{ points or '0' }}</span>
+          </div>
+          {% if caller is defined %}{{ caller() }}{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endmacro %}
+
+  <div class="container">
+    <div class="header">
+      <h1>{% block page_heading %}{% endblock %}</h1>
+      <div class="subtitle">生成时间：{{ generatedTime }}</div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <div class="footer">
+      <p>Generated by {{ botName }} Bot | Designed by 1v7w</p>
+    </div>
+  </div>
+</body>
+</html>
