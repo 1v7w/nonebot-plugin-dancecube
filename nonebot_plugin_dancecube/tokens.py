@@ -6,7 +6,7 @@ from nonebot import get_bot
 from nonebot.log import logger
 from nonebot_plugin_apscheduler import scheduler
 
-from .download import http_get, http_post
+from .download import http_get, http_post, http_post_raw
 from .config import user_tokens_file
 
 import asyncio
@@ -67,20 +67,34 @@ class TokenBuilder:
     async def get_token(self, qq: int) -> None:
         """启动定时轮询获取 token 的任务"""
         job_id = f"get_token_job_{qq}"
+        cancel_job_id = f"cancel_{job_id}"
 
-        async def _poll_token(job_id: str, client_id: str, qq: int):
+        # 清理可能残留的同名任务
+        for jid in (job_id, cancel_job_id):
+            existing = scheduler.get_job(jid)
+            if existing:
+                scheduler.remove_job(jid)
+
+        async def _poll_token(job_id: str, cancel_job_id: str, client_id: str, qq: int):
             data = {
                 "client_type": "qrcode",
                 "grant_type": "client_credentials",
                 "client_id": client_id,
             }
-            rep = await http_post(self.GET_TOKEN_API, data)
-            if rep is None:
-                return
-            token = Token.from_dict(rep)
+            try:
+                rep = await http_post_raw(self.GET_TOKEN_API, data)
+            except Exception:
+                return  # 网络异常，等下次轮询重试
+            if rep.status_code != 200:
+                return  # 未扫码，等下次轮询
+            token = Token.from_dict(rep.json())
             token.qq = str(qq)
             await TokenManager(user_tokens_file).update_token(token)
+            # 登录成功，清理轮询任务和超时取消任务
             scheduler.remove_job(job_id)
+            cancel_job = scheduler.get_job(cancel_job_id)
+            if cancel_job:
+                scheduler.remove_job(cancel_job_id)
             await get_bot().send_private_msg(
                 user_id=qq,
                 message=f"登录成功。登录的舞立方ID：{token.user_id}\n如果不是你的舞立方ID号，请重新登录！",
@@ -90,7 +104,7 @@ class TokenBuilder:
             _poll_token,
             "interval",
             seconds=5,
-            args=[job_id, self.id, qq],
+            args=[job_id, cancel_job_id, self.id, qq],
             id=job_id,
         )
 
@@ -105,7 +119,7 @@ class TokenBuilder:
             "date",
             run_date=datetime.now() + timedelta(minutes=2),
             args=[job_id, qq],
-            id=f"cancel_{job_id}",
+            id=cancel_job_id,
         )
 
 

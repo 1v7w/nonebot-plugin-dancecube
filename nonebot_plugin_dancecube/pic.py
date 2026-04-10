@@ -112,7 +112,7 @@ def _base_template_data(user_info: UserInfo) -> dict:
 
 
 async def _render_template(template_name: str, template_data: dict,
-                           viewport_width: int = 1200, viewport_height: int = 1500) -> bytes:
+                           viewport_width: int = 1200, viewport_height: int = 100) -> bytes:
     """通用模板渲染方法，包含图片优化"""
     img_bytes = await template_to_pic(
         template_path=str(templates_dir),
@@ -156,12 +156,22 @@ async def create_rating_analysis_img(user_info: UserInfo, music_info_manager: Mu
     return await _render_template("myrt.html", template_data)
 
 
-async def create_ap30_img(user_info: UserInfo, music_info_manager: MusicInfoManager) -> bytes:
+async def create_ap30_img(user_info: UserInfo, music_info_manager: MusicInfoManager, mode: str = "all") -> bytes:
     """生成 AP30 图片"""
-    await music_info_manager.get_all_rank_list()
-    all_ap_list = [x for x in music_info_manager.all_rank_list if x.accuracy == 100]
-
     template_data = _base_template_data(user_info)
+    
+    await music_info_manager.get_all_rank_list()
+    if mode in { "official", "o", "官铺" }:
+        all_ap_list = [x for x in music_info_manager.all_rank_list if x.accuracy == 100 and x.is_official]
+        template_data["pageTitleEnding"] = "(官铺)"
+    elif mode in { "custom", "c", "自制谱" }:
+        all_ap_list = [x for x in music_info_manager.all_rank_list if x.accuracy == 100 and not x.is_official]
+        template_data["pageTitleEnding"] = "(自制谱)"
+    else:
+        all_ap_list = [x for x in music_info_manager.all_rank_list if x.accuracy == 100]
+        template_data["pageTitleEnding"] = "(官铺+自制谱)"
+        
+    
     template_data["apCount"] = len(all_ap_list)
     template_data["apListCount"] = min(len(all_ap_list), 30)
     template_data["apList"] = [await _generate_score_entry(m) for m in _take_n(all_ap_list, 30)]

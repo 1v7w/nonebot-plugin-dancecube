@@ -64,3 +64,15 @@ async def http_get_image(url: str) -> Image.Image:
         response = await client.get(url)
         response.raise_for_status()
         return Image.open(BytesIO(response.content))
+
+
+async def http_get_raw(url: str, params: dict | None = None) -> httpx.Response:
+    """GET 请求，返回原始 Response 对象（不自动重试）"""
+    async with httpx.AsyncClient(proxy=None) as client:
+        return await client.get(url, params=params)
+
+
+async def http_post_raw(url: str, data: dict | None = None) -> httpx.Response:
+    """POST 请求，返回原始 Response 对象（不自动重试）"""
+    async with httpx.AsyncClient(proxy=None) as client:
+        return await client.post(url, data=data)
