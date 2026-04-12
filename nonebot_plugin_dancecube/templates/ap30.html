@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-{% call render_personal_info(avatarUrl, playerName, powerValue, points) %}
+{% call render_personal_info(avatarUrl, playerName, powerValue, points, teamName, teamPosition) %}
 <div class="stat">
   <span class="stat-label">AP歌曲数:</span>
   <span class="ap-count-highlight">{{ apCount or '0' }}</span>

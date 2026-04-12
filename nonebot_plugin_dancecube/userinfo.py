@@ -1,4 +1,7 @@
+from nonebot.log import logger
+
 from .download import http_get_with_token
+from .utils import TEAM_MEMBER_TYPE_MAP
 
 
 class UserInfo:
@@ -10,6 +13,9 @@ class UserInfo:
         self.score: int = 0                 # 积分
         self.title_url: str = ""            # 头衔
         self.head_img_box_url: str = ""     # 头像边框
+        self.played_numbers: int = 0        # 游玩次数(暂未实现
+        self.team_name: str = ""            # 战队名称
+        self.team_position: str = ""        # 战队职位
 
     @staticmethod
     async def fetch_user_data(token: str, user_id: str) -> "UserInfo":
@@ -28,6 +34,20 @@ class UserInfo:
             user.score = user_data.get("MusicScore", 0)
             user.title_url = str(user_data.get("TitleUrl", "")).removesuffix('/256')
             user.head_img_box_url = str(user_data.get("HeadimgBoxPath", "")).removesuffix('/256')
+
+            # 获取战队信息
+            team_id = user_data.get("TeamID", 0)
+            if team_id:
+                try:
+                    team_url = "https://dancedemo.shenghuayule.com/Dance/api/Team/GetTeamInfo"
+                    team_data = await http_get_with_token(team_url, {"teamId": str(team_id)}, token)
+                    if team_data:
+                        user.team_name = team_data.get("TeamName", "")
+                        member_type = team_data.get("UserInfo", {}).get("MemberType", 0)
+                        user.team_position = TEAM_MEMBER_TYPE_MAP.get(member_type, "未知")
+                except Exception as e:
+                    logger.warning(f"获取战队信息失败: {e}")
+
         return user
 
     def __str__(self):

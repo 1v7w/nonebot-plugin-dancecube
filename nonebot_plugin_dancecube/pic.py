@@ -107,6 +107,8 @@ def _base_template_data(user_info: UserInfo) -> dict:
         "avatarUrl": user_info.head_img_url,
         "powerValue": user_info.rating,
         "points": user_info.score,
+        "teamName": user_info.team_name,
+        "teamPosition": user_info.team_position,
         "botName": dc_config.botName,
     }
 

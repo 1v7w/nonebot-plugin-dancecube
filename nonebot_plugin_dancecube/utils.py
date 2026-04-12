@@ -10,6 +10,14 @@ def calc_time_difference(given_time_str: str) -> int:
 # 难度类型映射
 LEVEL_TYPE_LIST = [11, 12, 13, 14, 15, 101, 102, 103, 104, 105]
 
+# 战队职位映射
+TEAM_MEMBER_TYPE_MAP = {
+    1: "队长",
+    2: "副队",
+    3: "队员",
+    4: "精英",
+}
+
 LEVEL_TYPE_TO_STR = {
     11: "经典-基础",
     12: "经典-进阶",
