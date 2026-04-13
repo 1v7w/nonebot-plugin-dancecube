@@ -203,7 +203,7 @@
   </div>
   {% endmacro %}
 
-  {% macro render_personal_info(avatarUrl, playerName, powerValue, points, teamName='', teamPosition='') %}
+  {% macro render_personal_info(avatarUrl, playerName, powerValue, points, playedNumbers=0, teamName='', teamPosition='') %}
   <div class="section personal-info">
     <div class="personal-info-container">
       <div class="avatar">
@@ -219,6 +219,10 @@
           <div class="stat">
             <span class="stat-label">积分:</span>
             <span class="stat-value">{{ points or '0' }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">游玩次数:</span>
+            <span class="stat-value">{{ playedNumbers or '0' }}</span>
           </div>
           {% if caller is defined %}{{ caller() }}{% endif %}
         </div>

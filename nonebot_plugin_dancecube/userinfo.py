@@ -35,6 +35,18 @@ class UserInfo:
             user.title_url = str(user_data.get("TitleUrl", "")).removesuffix('/256')
             user.head_img_box_url = str(user_data.get("HeadimgBoxPath", "")).removesuffix('/256')
 
+            # 获取游玩次数
+            try:
+                play_count_url = "https://dancedemo.shenghuayule.com/Dance/api/ReplyTextItem/GetAllList"
+                play_count_data = await http_get_with_token(play_count_url, {"machineId": "0"}, token)
+                if play_count_data:
+                    for item in play_count_data:
+                        if item.get("ReplyTextItemID") == 5 and item.get("ItemType") == 5:
+                            user.played_numbers = int(item.get("Content", 0))
+                            break
+            except Exception as e:
+                logger.warning(f"获取游玩次数失败: {e}")
+
             # 获取战队信息
             team_id = user_data.get("TeamID", 0)
             if team_id:

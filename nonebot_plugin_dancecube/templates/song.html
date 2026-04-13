@@ -84,7 +84,7 @@
       </div>
       <div>
         <div class="player-name">{{ playerName or '玩家名称' }}{% if teamName %}<span class="player-team-name">[{{ teamName }}]</span>{% if teamPosition %}<span class="player-team-position">{{ teamPosition }}</span>{% endif %}{% endif %}</div>
-        <div class="player-stats">战力: {{ powerValue or '0' }} | 积分: {{ points or '0' }}</div>
+        <div class="player-stats">战力: {{ powerValue or '0' }} | 积分: {{ points or '0' }} | 游玩次数: {{ playedNumbers or '0' }}</div>
       </div>
     </div>
   </div>
