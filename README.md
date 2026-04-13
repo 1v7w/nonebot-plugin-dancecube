@@ -93,19 +93,23 @@ _✨ 舞立方插件：提供舞立方战力分析等基础功能 ✨_
 
 **/dc myrt**
 
-![myrt](./assets/myrt.jpg)
+![myrt](https://raw.githubusercontent.com/1v7w/1v7w-image-bed/main/img220260413193144442.jpg)
 
 **/dc ap30**
 
-![ap30](./assets/ap30.jpg)
+![ap30]https://raw.githubusercontent.com/1v7w/1v7w-image-bed/main/img220260413193141025.jpg)
 
 **/dc song 6354**
 
-![song 6354](./assets/singlesong.jpg)
+![song 6354](https://raw.githubusercontent.com/1v7w/1v7w-image-bed/main/img220260413193130199.jpg)
 
 ### 更新历史
 
-v0.1.5
+#### v0.1.6
+- 战绩显示增加战队名、战队职位
+- 战绩显示增加游玩歌曲数目
+
+#### v0.1.5
 - ap30允许选择官铺or自制谱。
 - 添加手机号登录功能
 - 修复二维码登录的一些bug
