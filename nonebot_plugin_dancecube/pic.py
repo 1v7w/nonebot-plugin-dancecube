@@ -110,7 +110,7 @@ def _base_template_data(user_info: UserInfo) -> dict:
         "playedNumbers": user_info.played_numbers,
         "teamName": user_info.team_name,
         "teamPosition": user_info.team_position,
-        "botName": dc_config.botName,
+        "botName": dc_config.dancecube_botname,
     }
 
 
@@ -324,14 +324,14 @@ async def update_official_covers() -> str:
 async def _register_cover_update_job():
     """根据配置的 cron 表达式注册定时更新官方封面任务"""
     from apscheduler.triggers.cron import CronTrigger
-    trigger = CronTrigger.from_crontab(dc_config.cover_update_cron)
+    trigger = CronTrigger.from_crontab(dc_config.dancecube_cover_update_cron)
     scheduler.add_job(
         update_official_covers,
         trigger,
         id="update_official_covers",
         replace_existing=True,
     )
-    logger.info(f"已注册定时更新官方封面任务，cron: {dc_config.cover_update_cron}")
+    logger.info(f"已注册定时更新官方封面任务，cron: {dc_config.dancecube_cover_update_cron}")
     
 @driver.on_startup
 async def _ensure_default_cover() -> None:
