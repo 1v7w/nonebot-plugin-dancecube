@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-dancecube"
-version = "0.1.6"
+version = "0.1.7"
 description = "一个简单的舞立方插件"
 authors = [
     { name = "1v7w", email = "gascd11@163.com" },
