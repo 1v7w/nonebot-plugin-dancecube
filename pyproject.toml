@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-dancecube"
-version = "0.1.7"
+version = "0.1.8"
 description = "一个简单的舞立方插件"
 authors = [
     { name = "1v7w", email = "gascd11@163.com" },
@@ -11,9 +11,9 @@ dependencies = [
     "httpx>=0.24.0",
     "Pillow>=10.0.0",
     "pydantic>=2.0.0",
-    "nonebot_plugin_apscheduler>=0.3.0",
-    "nonebot_plugin_htmlrender>=0.3.0",
-    "nonebot_plugin_localstore>=0.7.0",
+    "nonebot-plugin-apscheduler>=0.3.0",
+    "nonebot-plugin-htmlrender>=0.3.0",
+    "nonebot-plugin-localstore>=0.7.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"

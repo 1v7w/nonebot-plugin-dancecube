@@ -7,8 +7,6 @@ from io import BytesIO
 
 from nonebot.log import logger
 
-
-
 def retry_on_failure(max_retries: int = 3, delay: float = 1, backoff: float = 2):
     """装饰器：请求失败时自动重试，指数退避"""
     def decorator(func):
@@ -32,7 +30,7 @@ def retry_on_failure(max_retries: int = 3, delay: float = 1, backoff: float = 2)
 @retry_on_failure(max_retries=3, delay=1, backoff=2)
 async def http_get(url: str, params: dict | None = None, headers: dict | None = None) -> dict | None:
     """GET 请求，返回 JSON 或 None"""
-    async with httpx.AsyncClient(proxy=None) as client:
+    async with httpx.AsyncClient() as client:
         rep = await client.get(url, headers=headers, params=params)
         if rep.status_code == 200:
             return rep.json()
@@ -49,7 +47,7 @@ async def http_get_with_token(url: str, params: dict | None = None, token: str =
 @retry_on_failure(max_retries=3, delay=1, backoff=2)
 async def http_post(url: str, data: dict | None = None) -> dict | None:
     """POST 请求，返回 JSON 或 None"""
-    async with httpx.AsyncClient(proxy=None) as client:
+    async with httpx.AsyncClient() as client:
         rep = await client.post(url, data=data)
         if rep.status_code == 200:
             return rep.json()
@@ -60,7 +58,7 @@ async def http_post(url: str, data: dict | None = None) -> dict | None:
 @retry_on_failure(max_retries=3, delay=1, backoff=2)
 async def http_get_image(url: str) -> Image.Image:
     """下载图片并返回 PIL Image 对象"""
-    async with httpx.AsyncClient(proxy=None) as client:
+    async with httpx.AsyncClient() as client:
         response = await client.get(url)
         response.raise_for_status()
         return Image.open(BytesIO(response.content))
@@ -68,11 +66,11 @@ async def http_get_image(url: str) -> Image.Image:
 
 async def http_get_raw(url: str, params: dict | None = None) -> httpx.Response:
     """GET 请求，返回原始 Response 对象（不自动重试）"""
-    async with httpx.AsyncClient(proxy=None) as client:
+    async with httpx.AsyncClient() as client:
         return await client.get(url, params=params)
 
 
 async def http_post_raw(url: str, data: dict | None = None) -> httpx.Response:
     """POST 请求，返回原始 Response 对象（不自动重试）"""
-    async with httpx.AsyncClient(proxy=None) as client:
+    async with httpx.AsyncClient() as client:
         return await client.post(url, data=data)
