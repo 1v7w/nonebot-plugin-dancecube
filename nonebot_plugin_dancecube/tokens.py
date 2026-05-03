@@ -12,6 +12,14 @@ from .config import user_tokens_file
 import asyncio
 
 _tokens_lock = asyncio.Lock()
+_token_manager: "TokenManager | None" = None
+
+
+def get_token_manager() -> "TokenManager":
+    global _token_manager
+    if _token_manager is None:
+        _token_manager = TokenManager(user_tokens_file)
+    return _token_manager
 
 class Token:
     def __init__(self, access_token: str = "", refresh_token: str = "", expires: str = "",
@@ -89,7 +97,7 @@ class TokenBuilder:
                 return  # 未扫码，等下次轮询
             token = Token.from_dict(rep.json())
             token.qq = str(qq)
-            await TokenManager(user_tokens_file).update_token(token)
+            await get_token_manager().update_token(token)
             # 登录成功，清理轮询任务和超时取消任务
             scheduler.remove_job(job_id)
             cancel_job = scheduler.get_job(cancel_job_id)

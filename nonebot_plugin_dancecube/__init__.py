@@ -6,12 +6,12 @@ require("nonebot_plugin_apscheduler")
 require("nonebot_plugin_htmlrender")
 
 from .download import http_get_raw, http_post_raw
-from .tokens import Token, TokenManager, TokenBuilder
+from .tokens import Token, get_token_manager, TokenBuilder
 from .utils import calc_time_difference
 from .recording import MusicInfoManager
 from .userinfo import UserInfo
-from .pic import create_rating_analysis_img, create_ap30_img, create_single_song_record_img, update_official_covers
-from .config import Config, user_tokens_file
+from .pic import create_rating_analysis_img, create_ap30_img, create_single_song_record_img, create_random_song_img, update_official_covers
+from .config import Config
 
 
 from nonebot.plugin import PluginMetadata
@@ -39,6 +39,7 @@ HELP_TEXT = (
     "/dc myrtall 获取战力分析(包含自制谱)\n"
     "/dc ap30 [o/c] 获取最好的30首AP战绩(默认混合, o官方, c自制)\n"
     "/dc song [id] 获取歌曲id为[id]的个人成绩\n"
+    "/dc random [level] 随机一首官铺(可指定等级)\n"
     "/dc login 登录舞立方账号(仅私聊可用)\n"
     # "/dc updatecover 更新官方曲目封面(仅机器人管理员可用)\n"
 )
@@ -105,12 +106,27 @@ async def handle_dc(bot: Bot, event: MessageEvent):
         else:
             await dc.finish(str(result))
 
+    elif cmd == 'random':
+        level = None
+        if len(args) >= 3:
+            try:
+                level = int(args[2])
+                if level < 1 or level > 19:
+                    await dc.finish('等级范围: 1-19')
+            except ValueError:
+                await dc.finish('等级必须是数字，例如: /dc random 15')
+        success, result = await create_random_song_img(userinfo, music_info_manager, level)
+        if success:
+            await dc.finish(MessageSegment.image(result))
+        else:
+            await dc.finish(str(result))
+
     else:
         await dc.finish(HELP_TEXT)
         
 async def _check_token(qq_userid: int) -> Token | str:
     """检查用户 token 状态，返回 token 或错误消息"""
-    token = await TokenManager(user_tokens_file).get_token_by_qq(qq_userid)
+    token = await get_token_manager().get_token_by_qq(qq_userid)
     if token is None:
         return '还没有登录。\n请私聊我发送"/dc login"来获取二维码登录吧。'
     if calc_time_difference(token.expires) < 600:
@@ -236,7 +252,7 @@ async def handle_phone_login(bot: Bot, event: MessageEvent):
 
         token = Token.from_dict(data)
         token.qq = str(qq_userid)
-        await TokenManager(user_tokens_file).update_token(token)
+        await get_token_manager().update_token(token)
         await phone_login.finish(
             f"登录成功。登录的舞立方ID：{token.user_id}\n如果不是你的舞立方ID号，请重新登录！"
         )

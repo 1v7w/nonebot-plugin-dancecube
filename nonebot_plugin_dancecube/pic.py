@@ -1,6 +1,8 @@
 import asyncio
 import os
+import random
 from datetime import datetime
+from pathlib import Path
 
 from nonebot.log import logger
 from nonebot_plugin_apscheduler import scheduler
@@ -9,8 +11,11 @@ from nonebot_plugin_htmlrender import template_to_pic
 from .download import http_get, http_get_image
 from .recording import MusicInfoManager, RankMusicInfo, LastPlayMusicInfo
 from .userinfo import UserInfo
-from .utils import LEVEL_TYPE_TO_STR, LEVEL_TYPE_LIST
+from .utils import LEVEL_TYPE_LIST, parse_level_type_str
 from .config import cover_dir, templates_dir, dc_config, thumb_dir, driver
+from .official_cache import OfficialMusic, get_official_music_list, get_official_music
+
+GOODS_INFO_API = "https://dancedemo.shenghuayule.com/Dance/api/MusicData/GetGoodsInfo"
 
 # 图片生成配置
 IMAGE_DEVICE_SCALE_FACTOR = 1  # 降低设备缩放因子以减小图片体积
@@ -45,8 +50,7 @@ async def get_music_cover_path(music_id: int) -> str:
 
 async def _download_and_save_cover(music_id: int) -> None:
     """下载自制谱封面并保存原图"""
-    get_goods_info_api = "https://dancedemo.shenghuayule.com/Dance/api/MusicData/GetGoodsInfo"
-    rep = await http_get(get_goods_info_api, params={"musicId": music_id})
+    rep = await http_get(GOODS_INFO_API, params={"musicId": music_id})
     if rep is None:
         return
 
@@ -84,16 +88,16 @@ def _generate_thumbnail(src_path, thumb_path, max_size=COVER_MAX_SIZE) -> None:
 
 async def _generate_score_entry(music_info: RankMusicInfo | LastPlayMusicInfo) -> dict:
     """生成单曲数据字典"""
-    level_type_str = LEVEL_TYPE_TO_STR[music_info.level_type]
+    difficulty, level_type_prefix = parse_level_type_str(music_info.level_type)
     cover_path = await get_music_cover_path(music_info.id)
     return {
         "songName": music_info.name,
         "coverUrl": cover_path,
         "id": music_info.id,
-        "difficulty": level_type_str[-2:],      # 基础、进阶、专家、大师、传奇
+        "difficulty": difficulty,           # 基础、进阶、专家、大师、传奇
         "level": music_info.level,
-        "levelType": level_type_str[:-3],        # 经典/show
-        "accuracy": music_info.accuracy,         # 0.00~100.00
+        "levelType": level_type_prefix,     # 经典/show
+        "accuracy": music_info.accuracy,    # 0.00~100.00
         "rating": int(music_info.rating),
         "playTime": music_info.record_time,
     }
@@ -182,6 +186,56 @@ async def create_ap30_img(user_info: UserInfo, music_info_manager: MusicInfoMana
     return await _render_template("ap30.html", template_data)
 
 
+def _build_difficulty_records(
+    rank_dict: dict[int, RankMusicInfo],
+    available_types: dict[int, int],
+) -> list[dict]:
+    """构建难度记录列表。
+
+    Args:
+        rank_dict: 以 level_type 为键的游玩记录字典
+        available_types: 以 level_type 为键、等级为值的字典
+    """
+    records: list[dict] = []
+    for lt in LEVEL_TYPE_LIST:
+        if lt not in available_types and lt not in rank_dict:
+            continue
+
+        difficulty, level_type_prefix = parse_level_type_str(lt)
+        entry: dict = {"difficulty": difficulty, "levelType": level_type_prefix}
+
+        if lt in rank_dict:
+            r = rank_dict[lt]
+            entry.update(
+                hasRecord=True,
+                level=r.level,
+                accuracy=r.accuracy,
+                combo=r.combo,
+                miss=r.miss,
+                rating=int(r.rating),
+                playTime=r.record_time,
+            )
+        else:
+            entry["hasRecord"] = False
+            if lt in available_types:
+                entry["level"] = available_types[lt]
+
+        records.append(entry)
+    return records
+
+
+async def _get_custom_music_difficulties(music_id: int) -> dict[int, int]:
+    """获取自制谱存在的难度信息，返回 {level_type: level}"""
+    rep = await http_get(GOODS_INFO_API, params={"musicId": music_id})
+    if rep is None:
+        return {}
+    return {
+        d["MusicLevNew"]: d["MusicLevel"]
+        for d in rep.get("LevelList", [])
+        if d.get("MusicLevel", -1) != -1 and d.get("MusicLevNew") is not None
+    }
+
+
 async def create_single_song_record_img(user_info: UserInfo, music_info_manager: MusicInfoManager,
                                          song_id: str) -> tuple[bool, bytes | str]:
     """生成单曲成绩图片，返回 (成功标志, 图片bytes或错误消息)"""
@@ -195,40 +249,22 @@ async def create_single_song_record_img(user_info: UserInfo, music_info_manager:
 
     cover_path = await get_music_cover_path(rank_list[0].id)
 
+    official_music = await get_official_music(int(song_id))
+    if official_music:
+        available_types = official_music.get_level_map()
+    else:
+        available_types = await _get_custom_music_difficulties(int(song_id))
+
     template_data = _base_template_data(user_info)
     template_data["songName"] = rank_list[0].name
     template_data["songId"] = rank_list[0].id
     template_data["coverUrl"] = cover_path
-    template_data["records"] = []
-
-    # 构建各难度记录
-    rank_dict = {r.level_type: r for r in rank_list}
-    for lt in LEVEL_TYPE_LIST:
-        level_type_str = LEVEL_TYPE_TO_STR[lt]
-        difficulty = level_type_str[-2:]
-        level_type_prefix = level_type_str[:-3]
-        if lt in rank_dict:
-            r = rank_dict[lt]
-            template_data["records"].append({
-                "hasRecord": True,
-                "difficulty": difficulty,
-                "levelType": level_type_prefix,
-                "level": r.level,
-                "accuracy": r.accuracy,
-                "combo": r.combo,
-                "miss": r.miss,
-                "rating": int(r.rating),
-                "playTime": r.record_time,
-            })
-        else:
-            template_data["records"].append({
-                "hasRecord": False,
-                "difficulty": difficulty,
-                "levelType": level_type_prefix,
-            })
+    template_data["records"] = _build_difficulty_records(
+        {r.level_type: r for r in rank_list}, available_types
+    )
 
     img_bytes = await _render_template("song.html", template_data,
-                                        viewport_width=800, viewport_height=900)
+                                        viewport_width=800)
     return True, img_bytes
 
 
@@ -354,3 +390,42 @@ async def _ensure_default_cover() -> None:
     draw.text((x, y), text, fill=(80, 80, 80), font=font)
     img.save(default_cover_path, "JPEG", quality=85)
     logger.info("已生成默认占位封面 cover/-1.jpg")
+
+
+async def create_random_song_img(
+    user_info: UserInfo, music_info_manager: MusicInfoManager, level: int | None
+) -> tuple[bool, bytes | str]:
+    """随机选择一首官铺并生成成绩图片，返回 (成功标志, 图片bytes或错误消息)"""
+    from .official_cache import filter_by_level
+
+    music_list = await get_official_music_list()
+    if not music_list:
+        return False, "官铺列表为空，请稍后再试。"
+
+    candidates = filter_by_level(music_list, level)
+    if not candidates:
+        if level is not None:
+            return False, f"没有找到等级为 {level} 的官铺。"
+        return False, "没有可用的官铺。"
+
+    chosen_music, chosen_diff = random.choice(candidates)
+    music_id = chosen_music.music_id
+    cover_path = await get_music_cover_path(music_id)
+
+    await music_info_manager.get_all_rank_official_list()
+    rank_dict = {
+        r.level_type: r
+        for r in music_info_manager.all_rank_official_list
+        if str(r.id) == str(music_id)
+    }
+    available_types = chosen_music.get_level_map()
+
+    template_data = _base_template_data(user_info)
+    template_data["songName"] = chosen_music.name
+    template_data["songId"] = music_id
+    template_data["coverUrl"] = cover_path
+    template_data["records"] = _build_difficulty_records(rank_dict, available_types)
+
+    img_bytes = await _render_template("song.html", template_data,
+                                        viewport_width=800)
+    return True, img_bytes

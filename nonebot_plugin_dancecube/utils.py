@@ -31,6 +31,18 @@ LEVEL_TYPE_TO_STR = {
     105: "show+传奇",
 }
 
+_LEVEL_TYPE_SPLIT = {
+    11: ("基础", "经典"), 12: ("进阶", "经典"), 13: ("专家", "经典"),
+    14: ("大师", "经典"), 15: ("传奇", "经典"),
+    101: ("基础", "show+"), 102: ("进阶", "show+"), 103: ("专家", "show+"),
+    104: ("大师", "show+"), 105: ("传奇", "show+"),
+}
+
+
+def parse_level_type_str(level_type: int) -> tuple[str, str]:
+    """解析 level_type，返回 (难度名, 类型前缀)，如 ("专家", "经典")"""
+    return _LEVEL_TYPE_SPLIT[level_type]
+
 
 def compute_rating(level: int, acc: float) -> int:
     """

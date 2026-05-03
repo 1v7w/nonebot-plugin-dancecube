@@ -124,6 +124,7 @@
   <div class="no-record">
     <div class="record-difficulty">
       <span class="difficulty {{ record.difficulty }}">{{ record.levelType }} {{ record.difficulty }}</span>
+      {% if record.level %}<span class="level-text">Lv.{{ record.level }}</span>{% endif %}
     </div>
     <div class="no-record-text">暂无游玩记录</div>
   </div>

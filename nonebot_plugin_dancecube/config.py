@@ -1,5 +1,3 @@
-import shutil
-import os
 from pathlib import Path
 
 from nonebot import get_driver, get_plugin_config, require
@@ -20,6 +18,7 @@ data_dir: Path = get_plugin_data_dir()
 data_dir.mkdir(parents=True, exist_ok=True)
 
 user_tokens_file: Path = data_dir / 'user_tokens.json'
+official_cache_file: Path = data_dir / 'official_music_list.json'
 cover_dir: Path = data_dir / 'cover'
 templates_dir: Path = Path(__file__).resolve().parent / "templates"
 
